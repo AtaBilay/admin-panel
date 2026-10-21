@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Админка — Аналитика</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ЭКРАН ЗАГРУЗКИ -->
+<div id="loading" class="center-screen">
+  <div class="loader">⏳</div>
+  <h2>Загрузка аналитики...</h2>
+</div>
+
+<!-- ОСНОВНОЙ ИНТЕРФЕЙС -->
+<div id="app" style="display: none;">
+  <div class="header">
+    <h1>Аналитика</h1>
+    <div class="header-avatar">P</div>
+  </div>
+  
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('dashboard')">Дашборд</div>
+    <div class="tab" onclick="switchTab('bloggers')">Блогеры</div>
+  </div>
+
+  <!-- ДАШБОРД -->
+  <div id="tab-dashboard" class="content">
+    <div class="filters">
+      <div class="filter-btn active" onclick="setPeriod('today', this)">Сегодня</div>
+      <div class="filter-btn" onclick="setPeriod('week', this)">Неделя</div>
+      <div class="filter-btn" onclick="setPeriod('month', this)">Месяц</div>
+      <div class="filter-btn" onclick="setPeriod('all', this)">Всё время</div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="kpi-title">Всего Стартов</div>
+        <div class="kpi-value" id="kpi-starts">0</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-title">Оплатили</div>
+        <div class="kpi-value" id="kpi-payments">0</div>
+      </div>
+      <div class="kpi green">
+        <div class="kpi-title">Конверсия</div>
+        <div class="kpi-value" id="kpi-conversion">0%</div>
+      </div>
+      <div class="kpi green">
+        <div class="kpi-title">Доход</div>
+        <div class="kpi-value" id="kpi-income">0 ₽</div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header">
+        <span>Воронка по блогерам</span>
+        <button class="copy-btn" style="background:var(--green)" onclick="exportCSV()">Экспорт CSV</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Блогер</th>
+            <th>Старты</th>
+            <th>Оплаты</th>
+            <th>Доход</th>
+          </tr>
+        </thead>
+        <tbody id="funnel-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- БЛОГЕРЫ -->
+  <div id="tab-bloggers" class="content" style="display: none;">
+    <button class="btn-main" onclick="openAddModal()">➕ Добавить блогера</button>
+    <div id="bloggers-list"></div>
+  </div>
+</div>
+
+<!-- МОДАЛКА ДОБАВЛЕНИЯ -->
+<div class="modal" id="add-modal">
+  <div class="modal-content">
+    <h3>Новый блогер</h3>
+    <input type="text" id="new-name" class="input-field" placeholder="Имя (например, Иван)">
+    <input type="text" id="new-contact" class="input-field" placeholder="Контакт (например, @ivan)">
+    <input type="text" id="new-platform" class="input-field" placeholder="Площадка (telegram, instagram)">
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeAddModal()">Отмена</button>
+      <button class="btn-save" onclick="saveBlogger()">Создать</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
